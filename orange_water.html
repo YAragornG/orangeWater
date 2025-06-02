@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orange Water - Stay Hydrated!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Avenir', sans-serif;
+        }
+        
+        body {
+            background-color: #f9f5f0; /* 降低饱和度的背景色 */
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm57-13c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm-9-21c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM60 91c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM35 41c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM12 60c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z' fill='%23ffd166' fill-opacity='0.08' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.3;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        header {
+            text-align: center;
+            padding: 15px 0 30px;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            color: #e67e22;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .interaction-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 80px;
+            min-height: 500px;
+            position: relative;
+            padding: 50px 0;
+        }
+        
+        .water-can-container {
+            position: absolute;
+            top: 10px;
+            left: 50px;
+            z-index: 10;
+            transform: rotate(-15deg);
+            cursor: pointer;
+            transition: all 0.5s ease;
+        }
+        
+        .water-can-container:hover {
+            transform: rotate(-10deg) translateY(-5px);
+        }
+        
+        .water-can {
+            width: 120px;
+            height: 170px;
+        }
+        
+        .water-stream {
+            position: absolute;
+            height: 0;
+            width: 6px;
+            background: #3498db;
+            left: 120px;
+            top: 110px;
+            transform-origin: top;
+            transform: rotate(15deg);
+            opacity: 0;
+            border-radius: 0 0 8px 8px;
+            z-index: 5;
+        }
+        
+        .orange-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 300px;
+            height: 300px;
+            margin-top: 50px;
+        }
+        
+        .orange-image {
+            width: 250px;
+            height: 250px;
+            object-fit: contain;
+            transition: all 0.5s ease;
+            z-index: 2;
+        }
+        
+        .speech-bubble {
+            position: absolute;
+            background: white;
+            border-radius: 30px;
+            padding: 15px 20px;
+            max-width: 250px;
+            top: -40px;
+            font-size: 1.2rem;
+            color: #333;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease;
+            z-index: 3;
+        }
+        
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            margin-left: -10px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 10px 10px 0 10px;
+            border-color: white transparent transparent transparent;
+        }
+        
+        .water-drops {
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 1;
+        }
+        
+        .water-drop {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: rgba(52, 152, 219, 0.7);
+            border-radius: 50%;
+            opacity: 0;
+        }
+        
+        .dashboard {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            max-width: 500px;
+            margin: 30px auto;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-box {
+            background: #f9f9f9;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #e67e22;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+        }
+        
+        .progress-container {
+            margin-top: 25px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .progress-bar {
+            height: 15px;
+            background: #ecf0f1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            width: 65%;
+            border-radius: 8px;
+            transition: width 0.5s ease;
+        }
+        
+        .reminder-info {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff8e1;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .next-reminder {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #e67e22;
+        }
+        
+        .reminder-time {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-top: 5px;
+            color: #2c3e50;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-water {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-settings {
+            background: #bdc3c7;
+            color: #2c3e50;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            display: flex;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .lang-btn {
+            background: none;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        
+        .lang-btn.active {
+            background: #f0f0f0;
+            font-weight: bold;
+        }
+        
+        .history {
+            max-width: 500px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        
+        .history-title {
+            margin-bottom: 20px;
+            color: #e67e22;
+            font-weight: 600;
+        }
+        
+        .history-items {
+            max-height: 200px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .history-time {
+            color: #7f8c8d;
+        }
+        
+        .history-amount {
+            font-weight: 500;
+            color: #3498db;
+        }
+        
+        @keyframes drop {
+            0% { transform: translateY(-10px); opacity: 0; }
+            30% { opacity: 1; }
+            100% { transform: translateY(30px); opacity: 0; }
+        }
+        
+        @keyframes pour {
+            0% { height: 0; opacity: 0; }
+            20% { height: 200px; opacity: 1; }
+            80% { height: 200px; opacity: 1; }
+            100% { height: 0; opacity: 0; }
+        }
+        
+        @media (max-width: 900px) {
+            .interaction-area {
+                flex-direction: column;
+                gap: 40px;
+                margin-top: 80px;
+            }
+            
+            .water-can-container {
+                top: -50px;
+                left: 50%;
+                transform: translateX(-50%) rotate(-15deg);
+            }
+            
+            .orange-container {
+                margin-top: 0;
+            }
+            
+            h1 {
+                font-size: 2.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switcher">
+        <button class="lang-btn active">EN</button>
+        <button class="lang-btn">中文</button>
+    </div>
+    
+    <div class="container">
+        <header>
+            <h1>Orange Water</h1>
+            <p class="subtitle">Stay hydrated and keep your orange happy with timely water reminders</p>
+        </header>
+        
+        <div class="interaction-area">
+            <div class="water-can-container">
+                <img src="/assets/water-can.png" alt="Watering Can" class="water-can">
+                <div class="water-stream" id="waterStream"></div>
+            </div>
+            
+            <div class="orange-container">
+                <div class="speech-bubble" id="speechBubble">Thank you for watering me! 🍊💧</div>
+                
+                <div class="water-drops" id="waterDrops"></div>
+                
+                <img src="/assets/happy-orange.png" alt="Happy Orange" class="orange-image" id="orangeImage">
+            </div>
+        </div>
+        
+        <div class="dashboard">
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-label">Water Intake</div>
+                    <div class="stat-value">1.2L</div>
+                    <div class="stat-label">60% of goal</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Last Drink</div>
+                    <div class="stat-value">9:45 AM</div>
+                    <div class="stat-label">1.5 hours ago</div>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span>Daily Water Goal</span>
+                    <span>2000 ml</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" id="waterProgress"></div>
+                </div>
+            </div>
+            
+            <div class="reminder-info">
+                <div class="icon">⏰</div>
+                <div>
+                    <div class="next-reminder">Next reminder in</div>
+                    <div class="reminder-time" id="nextReminderTime">11:20</div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button class="btn btn-water" id="waterBtn">
+                    <span>💧</span> Water Now
+                </button>
+                <button class="btn btn-settings" id="settingsBtn">
+                    <span>⚙️</span> Settings
+                </button>
+            </div>
+        </div>
+        
+        <div class="history">
+            <h3 class="history-title">Drinking History</h3>
+            <div class="history-items">
+                <div class="history-item">
+                    <span class="history-time">9:45 AM</span>
+                    <span class="history-amount">250 ml</span>
+                </div>
+                <div class="history-item">
+                    <span class="history-time">9:00 AM</span>
+                    <span class="history-amount">250 ml</span>
+                </div>
+                <div class="history-item">
+                    <span class="history-time">8:15 AM</span>
+                    <span class="history-amount">300 ml</span>
+                </div>
+                <div class="history-item">
+                    <span class="history-time">7:30 AM</span>
+                    <span class="history-amount">150 ml</span>
+                </div>
+                <div class="history-item">
+                    <span class="history-time">7:00 AM</span>
+                    <span class="history-amount">250 ml</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const waterCan = document.querySelector('.water-can-container');
+            const orangeImage = document.getElementById('orangeImage');
+            const waterStream = document.getElementById('waterStream');
+            const speechBubble = document.getElementById('speechBubble');
+            const waterDrops = document.getElementById('waterDrops');
+            const waterProgress = document.getElementById('waterProgress');
+            const nextReminderTime = document.getElementById('nextReminderTime');
+            const waterBtn = document.getElementById('waterBtn');
+            const waterDropsContainer = document.getElementById('waterDrops');
+            
+            // 默认使用英文
+            document.documentElement.lang = 'en';
+            
+            // 初始化提醒时间（30分钟后）
+            const now = new Date();
+            now.setMinutes(now.getMinutes() + 30);
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            nextReminderTime.textContent = `${hours}:${minutes}`;
+            
+            // 浇水功能
+            function waterOrange() {
+                // 显示水流效果
+                waterStream.style.animation = 'pour 1.5s forwards';
+                
+                // 创建水滴
+                createWaterDrops();
+                
+                // 显示感谢信息
+                speechBubble.textContent = "Thank you for watering me! 🍊💧";
+                speechBubble.style.opacity = "1";
+                speechBubble.style.transform = "translateY(0)";
+                
+                // 更新进度条
+                waterProgress.style.width = '75%';
+                
+                // 更新提醒时间（60分钟后）
+                const nextTime = new Date();
+                nextTime.setMinutes(nextTime.getMinutes() + 60);
+                const nextHours = nextTime.getHours().toString().padStart(2, '0');
+                const nextMinutes = nextTime.getMinutes().toString().padStart(2, '0');
+                nextReminderTime.textContent = `${nextHours}:${nextMinutes}`;
+                
+                // 添加历史记录
+                const now = new Date();
+                const timeString = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+                const historyItems = document.querySelector('.history-items');
+                
+                const newItem = document.createElement('div');
+                newItem.className = 'history-item';
+                newItem.innerHTML = `
+                    <span class="history-time">${timeString}</span>
+                    <span class="history-amount">250 ml</span>
+                `;
+                
+                historyItems.insertBefore(newItem, historyItems.firstChild);
+                
+                // 5秒后隐藏感谢信息
+                setTimeout(() => {
+                    speechBubble.style.opacity = "0";
+                    speechBubble.style.transform = "translateY(-10px)";
+                }, 5000);
+                
+                // 30分钟后恢复口渴状态
+                setTimeout(() => {
+                    orangeImage.src = "/assets/thirsty-orange.png";
+                    speechBubble.textContent = "I'm thirsty... please water me!";
+                    speechBubble.style.opacity = "1";
+                    speechBubble.style.transform = "translateY(0)";
+                    
+                    setTimeout(() => {
+                        speechBubble.style.opacity = "0";
+                        speechBubble.style.transform = "translateY(-10px)";
+                    }, 5000);
+                }, 30 * 60 * 1000);
+            }
+            
+            // 创建水滴效果
+            function createWaterDrops() {
+                waterDropsContainer.innerHTML = '';
+                
+                for (let i = 0; i < 15; i++) {
+                    const drop = document.createElement('div');
+                    drop.className = 'water-drop';
+                    
+                    // 随机位置
+                    const left = 20 + Math.random() * 220;
+                    const delay = Math.random() * 0.5;
+                    
+                    drop.style.left = `${left}px`;
+                    drop.style.top = "0";
+                    drop.style.animation = `drop ${0.8 + Math.random()}s ${delay}s forwards`;
+                    
+                    waterDropsContainer.appendChild(drop);
+                }
+                
+                waterDrops.style.opacity = "1";
+                
+                setTimeout(() => {
+                    waterDrops.style.opacity = "0";
+                }, 1500);
+            }
+            
+            // 语言切换功能
+            const langButtons = document.querySelectorAll('.lang-btn');
+            langButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    langButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    if (this.textContent === '中文') {
+                        document.documentElement.lang = 'zh';
+                        document.querySelector('h1').textContent = '橙子水 - 保持水分';
+                        document.querySelector('.subtitle').textContent = '按时喝水，保持水分，让您的橙子开心';
+                        speechBubble.textContent = "谢谢你给我浇水！ 🍊💧";
+                        waterBtn.innerHTML = '<span>💧</span> 现在浇水';
+                        document.getElementById('settingsBtn').innerHTML = '<span>⚙️</span> 设置';
+                        document.querySelector('.progress-header span:first-child').textContent = "每日饮水目标";
+                        document.querySelector('.next-reminder').textContent = "下次提醒";
+                        document.querySelector('.history-title').textContent = "饮水记录";
+                    } else {
+                        document.documentElement.lang = 'en';
+                        document.querySelector('h1').textContent = 'Orange Water';
+                        document.querySelector('.subtitle').textContent = 'Stay hydrated and keep your orange happy with timely water reminders';
+                        speechBubble.textContent = "Thank you for watering me! 🍊💧";
+                        waterBtn.innerHTML = '<span>💧</span> Water Now';
+                        document.getElementById('settingsBtn').innerHTML = '<span>⚙️</span> Settings';
+                        document.querySelector('.progress-header span:first-child').textContent = "Daily Water Goal";
+                        document.querySelector('.next-reminder').textContent = "Next reminder in";
+                        document.querySelector('.history-title').textContent = "Drinking History";
+                    }
+                });
+            });
+            
+            // 事件监听
+            waterCan.addEventListener('click', waterOrange);
+            waterBtn.addEventListener('click', waterOrange);
+            
+            // 初始橙子状态（口渴）
+            setTimeout(() => {
+                orangeImage.src = "/assets/thirsty-orange.png";
+                speechBubble.textContent = "I'm thirsty... please water me!";
+                speechBubble.style.opacity = "1";
+                speechBubble.style.transform = "translateY(0)";
+                
+                setTimeout(() => {
+                    speechBubble.style.opacity = "0";
+                    speechBubble.style.transform = "translateY(-10px)";
+                }, 5000);
+            }, 500);
+        });
+    </script>
+</body>
+</html>
